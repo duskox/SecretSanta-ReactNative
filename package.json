@@ -14,6 +14,7 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
+    "prettier": "prettier --list-different --trailing-comma all **/*.{js,jsx}",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
