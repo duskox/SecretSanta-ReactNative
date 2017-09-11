@@ -35,7 +35,7 @@ export default class Root extends React.Component {
 
   render() {
     return (
-      <View style={styles.container} >
+      <View style={ [styles.container, {height: this.state.visibleHeight}] } >
         <Image source={require('../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
         <View style={styles.inputContainer}>
           <Button

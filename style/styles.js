@@ -4,7 +4,6 @@ var React = require('react-native');
 
 var SecretSantaStyles = React.StyleSheet.create({
   container: {
-    flex: 1,
     flexWrap: 'wrap',
     backgroundColor: '#fff',
     alignItems: 'center',
