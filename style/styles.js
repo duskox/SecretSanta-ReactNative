@@ -12,11 +12,12 @@ var SecretSantaStyles = React.StyleSheet.create({
   },
   inputContainer: {
     flex: 3,
-    backgroundColor: '#f00',
-    alignItems: 'flex-start',
-    top: 100,
+    borderWidth: 1,
+    borderColor: '#f00',
+    backgroundColor: '#aaa',
+    alignItems: 'stretch',
     alignSelf: 'stretch',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   imageItem: {
     flex: 3,
@@ -45,6 +46,14 @@ var SecretSantaStyles = React.StyleSheet.create({
     alignSelf: 'stretch',
     textAlign: 'center',
   },
+  buttonStyle: {
+    padding: 16,
+    flexDirection: 'row',
+    fontSize: 48,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#f00',
+  }
 });
 
 export default SecretSantaStyles;
