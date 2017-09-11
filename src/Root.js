@@ -8,6 +8,7 @@ import {
   Keyboard,
   DeviceEventEmitter,
   TextInput,
+  LayoutAnimation,
   } from 'react-native';
 import styles from '../style/styles';
 
@@ -66,6 +67,7 @@ function onRegisterPress() {
 function keyboardDidShowHandler(e) {
   let newWindowSize = Dimensions.get('window').height - e.endCoordinates.height;
   console.log("Screen size should be: ", newWindowSize);
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   this.setState({
     visibleHeight: newWindowSize,
   });
@@ -73,6 +75,7 @@ function keyboardDidShowHandler(e) {
 
 function keyboardDidHideHandler(e) {
   console.log("Screen size should be: ", Dimensions.get('window').height);
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   this.setState({
     visibleHeight: Dimensions.get('window').height,
   });
