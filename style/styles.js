@@ -11,9 +11,12 @@ var SecretSantaStyles = React.StyleSheet.create({
   },
   inputContainer: {
     flex: 3,
-    borderWidth: 1,
+    flexDirection: 'column',
+    borderWidth: 0,
+    paddingLeft: 40,
+    paddingRight: 40,
     borderColor: '#f00',
-    backgroundColor: '#aaa',
+    backgroundColor: '#fff',
     alignItems: 'stretch',
     alignSelf: 'stretch',
     justifyContent: 'center',
@@ -25,33 +28,19 @@ var SecretSantaStyles = React.StyleSheet.create({
     height: null,
     resizeMode: 'contain',
   },
-  fillerBox: {
-    flex: 1,
-    backgroundColor: '#fff',
-    opacity: 0.5,
-    justifyContent: 'center',
-    width: 80,
-  },
-  textStyle: {
-    backgroundColor: '#ccc',
-  },
-  indicator: {
-    flex: 1,
-  },
-  inputText: {
-    paddingLeft: 40,
-    paddingRight: 40,
-    height: 60,
-    alignSelf: 'stretch',
-    textAlign: 'center',
-  },
   buttonStyle: {
-    padding: 16,
-    flexDirection: 'row',
-    fontSize: 48,
+    padding: 4,
+    fontSize: 24,
     marginTop: 10,
+    color: 'black',
     marginBottom: 10,
-    backgroundColor: '#f00',
+  },
+  buttonContainerStyle: {
+    backgroundColor: 'white',
+    borderRadius: 4,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: 'black',
   }
 });
 

@@ -3,7 +3,6 @@ import {
   View,
   KeyboardAvoidingView,
   Image,
-  Button,
   Dimensions,
   Keyboard,
   DeviceEventEmitter,
@@ -11,6 +10,7 @@ import {
   LayoutAnimation,
   } from 'react-native';
 import styles from '../style/styles';
+import Button from 'react-native-button';
 
 const deviceWidthDIP = Dimensions.get('window').width;
 const deviceHeightDIP = Dimensions.get('window').height;
@@ -40,16 +40,19 @@ export default class Root extends React.Component {
         <Image source={require('../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
         <View style={styles.inputContainer}>
           <Button
+            containerStyle={styles.buttonContainerStyle}
             style={styles.buttonStyle}
-            title="Login"
             onPress={onLoginPress}
-          />
+          >
+          Login
+          </Button>
           <Button
+            containerStyle={styles.buttonContainerStyle}
             style={styles.buttonStyle}
-            title="Register"
             onPress={onRegisterPress}
-          />
-          <TextInput />
+          >
+          Register
+          </Button>
         </View>
       </View>
     );
