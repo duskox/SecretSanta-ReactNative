@@ -41,6 +41,7 @@ var SecretSantaStyles = React.StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     borderColor: 'black',
+    elevation: 4,
   }
 });
 

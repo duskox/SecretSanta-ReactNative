@@ -9,14 +9,22 @@ import {
   TextInput,
   LayoutAnimation,
   } from 'react-native';
-import styles from '../style/styles';
+import styles from '../../style/styles';
 import Button from 'react-native-button';
+import { StackNavigator, NavigationActions } from 'react-navigation';
+
+import Register from './Register';
 
 export default class Root extends React.Component {
   constructor(props) {
     super(props)
     this.state = { text : '', visibleHeight: Dimensions.get('window').height };
   }
+
+  static navigationOptions = {
+    title: 'Root',
+    header: null,
+  };
 
   keyboardDidShowListener = {};
   keyboardDidHideListener = {};
@@ -34,7 +42,7 @@ export default class Root extends React.Component {
   render() {
     return (
       <View style={ [styles.container, {height: this.state.visibleHeight}] } >
-        <Image source={require('../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
+        <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
         <View style={styles.inputContainer}>
           <Button
             containerStyle={styles.buttonContainerStyle}
@@ -46,7 +54,7 @@ export default class Root extends React.Component {
           <Button
             containerStyle={styles.buttonContainerStyle}
             style={styles.buttonStyle}
-            onPress={onRegisterPress}
+            onPress={() => this.props.navigation.navigate('Register')}
           >
           Register
           </Button>
@@ -62,6 +70,7 @@ function onLoginPress() {
 
 function onRegisterPress() {
   console.log('Register!');
+  NavigationActions.navigate('Register');
 }
 
 function keyboardDidShowHandler(e) {
