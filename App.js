@@ -4,18 +4,10 @@ import {
   LayoutAnimation,
   UIManager,
   AppRegistry,
-  } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-
-import Root from './src/component/Root.js';
-import Register from './src/component/Register.js';
+} from 'react-native';
+import { SantaAppNavigator } from './src/navigation/Navigator.js';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-
-const SantaAppNavigator = StackNavigator({
-  Root: { screen: Root },
-  Register: { screen: Register },
-});
 
 AppRegistry.registerComponent('SantaApp', () => App);
 
