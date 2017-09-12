@@ -3,6 +3,8 @@ import {
   View,
   KeyboardAvoidingView,
   Image,
+  Text,
+  TouchableOpacity,
   Dimensions,
   Keyboard,
   DeviceEventEmitter,
@@ -12,8 +14,9 @@ import {
 import styles from '../../style/styles';
 import Button from 'react-native-button';
 import { StackNavigator, NavigationActions } from 'react-navigation';
-
+import Icon from 'react-native-vector-icons/Entypo';
 import Register from './Register';
+
 
 export default class Root extends React.Component {
   constructor(props) {
@@ -43,34 +46,26 @@ export default class Root extends React.Component {
     return (
       <View style={ [styles.container, {height: this.state.visibleHeight}] } >
         <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
-        <View style={styles.inputContainer}>
-          <Button
-            containerStyle={styles.buttonContainerStyle}
-            style={styles.buttonStyle}
-            onPress={onLoginPress}
-          >
-          Login
-          </Button>
-          <Button
-            containerStyle={styles.buttonContainerStyle}
-            style={styles.buttonStyle}
-            onPress={() => this.props.navigation.navigate('Register')}
-          >
-          Register
-          </Button>
-        </View>
+        <TouchableOpacity onPress={onLoginWithGooglePress}>
+          <MyButton />
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
-function onLoginPress() {
-  console.log('Login!');
+function MyButton(props) {
+  return (
+    <View style={styles.googleButtonStyle}>
+      <Icon.Button name = "google--with-circle" backgroundColor="#d34836" size={40}>
+        <Text style = {{fontSize: 25, color: 'white'}}>Login with Google</Text>
+      </Icon.Button>
+    </View>
+  );
 }
 
-function onRegisterPress() {
-  console.log('Register!');
-  NavigationActions.navigate('Register');
+function onLoginWithGooglePress() {
+  console.log("BLA!");
 }
 
 function keyboardDidShowHandler(e) {

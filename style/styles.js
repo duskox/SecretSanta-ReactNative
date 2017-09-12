@@ -42,6 +42,12 @@ var SecretSantaStyles = React.StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     elevation: 4,
+  },
+  googleButtonStyle: {
+    borderRadius: 4,
+    marginTop: 10,
+    marginBottom: 10,
+    elevation: 4,
   }
 });
 

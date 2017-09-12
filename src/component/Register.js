@@ -3,6 +3,7 @@ import {
   View,
   KeyboardAvoidingView,
   Image,
+  Text,
   Dimensions,
   Keyboard,
   DeviceEventEmitter,
@@ -12,6 +13,18 @@ import {
   } from 'react-native';
 import styles from '../../style/styles';
 import Button from 'react-native-button';
+import Icon from 'react-native-vector-icons/Entypo';
+
+function MyButton(props) {
+  return (
+    <Button style={styles.googleButtonStyle}>
+      <Icon.Button name = "google--with-circle" backgroundColor="#d34836" size={80} >
+        <Text style = {{fontSize: 15, color: 'white'}}>Login with Google</Text>
+      </Icon.Button>
+    </Button>
+  );
+}
+
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -28,10 +41,7 @@ export default class Register extends React.Component {
     return (
       <View style={ [styles.container, {height: this.state.visibleHeight}] } >
         <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
-        <TextInput></TextInput>
-        <TextInput></TextInput>
-        <TextInput></TextInput>
-        <Button>Sign in</Button>
+        <MyButton onPress=''/>
       </View>
     );
   }
