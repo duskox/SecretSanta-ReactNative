@@ -12,9 +12,6 @@ import {
 import styles from '../style/styles';
 import Button from 'react-native-button';
 
-const deviceWidthDIP = Dimensions.get('window').width;
-const deviceHeightDIP = Dimensions.get('window').height;
-
 export default class Root extends React.Component {
   constructor(props) {
     super(props)
