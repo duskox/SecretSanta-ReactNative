@@ -1,2 +1,2 @@
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
-
+Original Readme [here][https://github.com/duskox/SecretSanta-ReactNative/blob/master/REACTNATIVE.md].
