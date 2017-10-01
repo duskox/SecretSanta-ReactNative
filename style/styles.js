@@ -48,6 +48,8 @@ var SecretSantaStyles = React.StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     elevation: 4,
+    flexDirection: 'row',
+    backgroundColor: '#d34836',
   }
 });
 

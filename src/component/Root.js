@@ -17,11 +17,12 @@ import { StackNavigator, NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 import Register from './Register';
 
-
 export default class Root extends React.Component {
   constructor(props) {
     super(props)
     this.state = { text : '', visibleHeight: Dimensions.get('window').height };
+    this.onLoginWithGooglePress = this.onLoginWithGooglePress.bind(this);
+
   }
 
   static navigationOptions = {
@@ -29,43 +30,48 @@ export default class Root extends React.Component {
     header: null,
   };
 
-  keyboardDidShowListener = {};
-  keyboardDidHideListener = {};
-
-  componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShowHandler.bind(this));
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHideHandler.bind(this));
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
   render() {
+    const { navigate } = this.props.navigation;
+
     return (
       <View style={ [styles.container, {height: this.state.visibleHeight}] } >
         <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
-        <TouchableOpacity onPress={onLoginWithGooglePress}>
-          <MyButton />
+        <TouchableOpacity onPress={() => navigate('GoogleSignInWebView')}>
+          <MyButton/>
         </TouchableOpacity>
       </View>
     );
+  }
+
+  onLoginWithGooglePress() {
+    console.log("this.props:", this.props);
   }
 }
 
 function MyButton(props) {
   return (
     <View style={styles.googleButtonStyle}>
-      <Icon.Button name = "google--with-circle" backgroundColor="#d34836" size={40}>
-        <Text style = {{fontSize: 25, color: 'white'}}>Login with Google</Text>
-      </Icon.Button>
+        <Icon name="google--with-circle" size={40} color="white" style={{marginTop: 4, marginBottom: 4, marginRight: 4, marginLeft: 8,}} />
+        <Text style = {{fontSize: 25, color: 'white', alignSelf: 'center', marginRight: 8}}>Login with Google</Text>
     </View>
   );
 }
 
-function onLoginWithGooglePress() {
-  console.log("BLA!");
+// Code below is for occasion when an input field is present and keyboard pops up
+// so the screen should accomodate the keyboard and not be overlayed
+// by it.
+
+keyboardDidShowListener = {};
+keyboardDidHideListener = {};
+
+function componentWillMount() {
+  this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShowHandler.bind(this));
+  this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHideHandler.bind(this));
+}
+
+function componentWillUnmount() {
+  this.keyboardDidShowListener.remove();
+  this.keyboardDidHideListener.remove();
 }
 
 function keyboardDidShowHandler(e) {
