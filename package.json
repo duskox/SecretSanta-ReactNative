@@ -5,15 +5,12 @@
   "devDependencies": {
     "jest-expo": "~20.0.0",
     "prettier": "^1.6.0",
-    "react-native-scripts": "1.3.0",
     "react-test-renderer": "16.0.0-alpha.12"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "prettier": "prettier --list-different --trailing-comma all **/*.{js,jsx}",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
@@ -21,10 +18,10 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "^20.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.47.0",
     "react-native-button": "^2.1.0",
+    "react-native-google-signin": "^0.12.0",
     "react-native-vector-icons": "^4.3.0",
     "react-navigation": "^1.0.0-beta.11"
   }

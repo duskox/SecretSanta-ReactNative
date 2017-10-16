@@ -16,6 +16,8 @@ import Button from 'react-native-button';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 import Register from './Register';
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+
 
 export default class Root extends React.Component {
   constructor(props) {
@@ -35,6 +37,12 @@ export default class Root extends React.Component {
 
     return (
       <View style={ [styles.container, {height: this.state.visibleHeight}] } >
+        <GoogleSigninButton
+          style={{ width: 48, height: 48, marginTop: 20, marginBottom: 20 }}
+          size={GoogleSigninButton.Size.Icon}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={this._signIn.bind(this)}/>
+          
         <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
         <TouchableOpacity onPress={() => navigate('GoogleSignInWebView')}>
           <MyButton/>
