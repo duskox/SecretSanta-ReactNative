@@ -47,3 +47,4 @@ android/keystores/debug.keystore
 config.private.js
 secretsanta-app.keystore
 .env
+client_secret.json
