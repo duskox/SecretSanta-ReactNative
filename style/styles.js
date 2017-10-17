@@ -35,22 +35,12 @@ var SecretSantaStyles = React.StyleSheet.create({
     color: 'black',
     marginBottom: 10,
   },
-  buttonContainerStyle: {
-    backgroundColor: 'white',
-    borderRadius: 4,
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    elevation: 4,
+  googleSignInStyle:{
+    width: 130,
+    height: 48,
+    marginTop: 20,
+    marginBottom: 20,
   },
-  googleButtonStyle: {
-    borderRadius: 4,
-    marginTop: 10,
-    marginBottom: 10,
-    elevation: 4,
-    flexDirection: 'row',
-    backgroundColor: '#d34836',
-  }
 });
 
 export default SecretSantaStyles;
