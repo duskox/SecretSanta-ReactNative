@@ -14,9 +14,9 @@ import {
 import styles from '../../style/styles';
 import Button from 'react-native-button';
 import { StackNavigator, NavigationActions } from 'react-navigation';
-import Icon from 'react-native-vector-icons/Entypo';
-import Register from './Register';
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+import Config from 'react-native-config';
+import { CLIENT_ID } from 'react-native-dotenv';
 
 
 export default class Root extends React.Component {
@@ -35,18 +35,18 @@ export default class Root extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
 
+    console.log("this.props:", this.props);
+    console.log("Config:", Config);
+
     return (
       <View style={ [styles.container, {height: this.state.visibleHeight}] } >
         <GoogleSigninButton
-          style={{ width: 48, height: 48, marginTop: 20, marginBottom: 20 }}
-          size={GoogleSigninButton.Size.Icon}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={this._signIn.bind(this)}/>
-          
+          style={{ width: 130, height: 48, marginTop: 20, marginBottom: 20 }}
+          size={GoogleSigninButton.Size.Standard}
+          color={GoogleSigninButton.Color.Light}
+          onPress={this._signIn.bind(this)}
+        />
         <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
-        <TouchableOpacity onPress={() => navigate('GoogleSignInWebView')}>
-          <MyButton/>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -54,15 +54,39 @@ export default class Root extends React.Component {
   onLoginWithGooglePress() {
     console.log("this.props:", this.props);
   }
-}
 
-function MyButton(props) {
-  return (
-    <View style={styles.googleButtonStyle}>
-        <Icon name="google--with-circle" size={40} color="white" style={{marginTop: 4, marginBottom: 4, marginRight: 4, marginLeft: 8,}} />
-        <Text style = {{fontSize: 25, color: 'white', alignSelf: 'center', marginRight: 8}}>Login with Google</Text>
-    </View>
-  );
+  _signIn() {
+    GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+      // play services are available. can now configure library
+      GoogleSignin.configure({
+        scopes: [],
+        webClientId: CLIENT_ID,
+        offlineAccess: true
+      })
+      .then(() => {
+        GoogleSignin.currentUserAsync().then((user) => {
+          if(user) {
+            console.log('USER', user);
+            this.setState({user: user});
+          } else {
+            GoogleSignin.signIn()
+            .then((user) => {
+              console.log(user);
+              this.setState({user: user});
+            })
+            .catch((err) => {
+              console.log('WRONG SIGNIN', err);
+            })
+            .done();
+          }
+        }).done();
+      });
+    })
+    .catch((err) => {
+      console.log("Play services error", err.code, err.message);
+    });
+  }
+
 }
 
 // Code below is for occasion when an input field is present and keyboard pops up
