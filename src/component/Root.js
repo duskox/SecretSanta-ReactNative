@@ -15,6 +15,7 @@ import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import Config from 'react-native-config';
 import { CLIENT_ID } from 'react-native-dotenv';
 
+AppRegistry.registerComponent('SantaApp', () => App);
 
 export default class Root extends React.Component {
   constructor(props) {
