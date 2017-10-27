@@ -17,13 +17,42 @@ import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import Config from 'react-native-config';
 import { CLIENT_ID } from 'react-native-dotenv';
 
-AppRegistry.registerComponent('SantaApp', () => Root);
+/***
+ *     ________________        _       _______  _______
+ *    (  ____ \__   __/\     /( \     (  ____ \(  ____ \
+ *    | (    \/  ) (  ( \   / ) (     | (    \/| (    \/
+ *    | (_____   | |   \ (_) /| |     | (__    | (_____
+ *    (_____  )  | |    \   / | |     |  __)   (_____  )
+ *          ) |  | |     ) (  | |     | (            ) |
+ *    /\____) |  | |     | |  | (____/\ (____/\/\____) |
+ *    \_______)  )_(     \_/  (_______(_______/\_______)
+ *
+ */
+
+const containerRoot = {
+  flexWrap: 'wrap',
+  backgroundColor: '#0f0',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}
+
+
+/***
+ *     _______ _______ _______ _______ _______ _       _______ _      _________
+ *    (  ____ (  ___  |       |  ____ |  ___  | (    /(  ____ ( (    /\__   __/
+ *    | (    \/ (   ) | () () | (    )| (   ) |  \  ( | (    \/  \  ( |  ) (
+ *    | |     | |   | | || || | (____)| |   | |   \ | | (__   |   \ | |  | |
+ *    | |     | |   | | |(_)| |  _____) |   | | (\ \) |  __)  | (\ \) |  | |
+ *    | |     | |   | | |   | | (     | |   | | | \   | (     | | \   |  | |
+ *    | (____/\ (___) | )   ( | )     | (___) | )  \  | (____/\ )  \  |  | |
+ *    (_______(_______)/     \|/      (_______)/    )_|_______//    )_)  )_(
+ *
+ */
 
 export default class Root extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { text : '', visibleHeight: Dimensions.get('window').height };
-    this.state = { user: undefined };
+    this.state = { text : '', visibleHeight: Dimensions.get('window').height, user: undefined };
     // googleSignIn = this._singIn.bind(this);
   }
 
@@ -33,10 +62,12 @@ export default class Root extends React.Component {
   };
 
   componentDidMount() {
+    console.log('>>>>>>>>>>>>>>>>>>>> Adding change listener to app state');
     AppState.addEventListener('change', this.handleAppStateChange);
   }
 
   componentWillUnmount() {
+    console.log('Remove change listener to app state <<<<<<<<<<<<<<<<<<<<<<');
     AppState.removeEventListener('change', this.handleAppStateChange);
   }
 
@@ -47,11 +78,14 @@ export default class Root extends React.Component {
     // }
     // this.setState({appState: nextAppState});
     if (this.state.user) {
-
+      console.log('BLAaaaaaaaaaaaaaaaaaaaaaaaaa!')
+      navigate('JoinRaffleScreen');
     }
   }
 
   googleSignIn() {
+    const { navigate } = this.props.navigation;
+
     GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
       // play services are available. can now configure library
       GoogleSignin.configure({
@@ -62,14 +96,16 @@ export default class Root extends React.Component {
       .then(() => {
         GoogleSignin.currentUserAsync().then((user) => {
           if(user) {
-            console.log("This first:",this)
+            console.log("This first-----------------------:",this)
             this.setState({user: user});
+            navigate('JoinRaffleScreen');
           } else {
             GoogleSignin.signIn()
             .then((user) => {
-              console.log("This second:",this)
-              console.log("User:",user);
+              console.log("This second++++++++++++++++++++:",this)
+              console.log("User>>>>>>>>>>>>>>>:",user);
               this.setState({user: user});
+              navigate('JoinRaffleScreen');
             })
             .catch((err) => {
               console.log('WRONG SIGNIN', err);
@@ -85,13 +121,11 @@ export default class Root extends React.Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-
     console.log("this.props:", this.props);
     console.log("Config:", Config);
 
     return (
-      <View style={styles.containerRoot} >
+      <View style={containerRoot} >
         <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
         <Text></Text>
         <GoogleSigninButton
@@ -105,3 +139,5 @@ export default class Root extends React.Component {
   }
 
 }
+
+AppRegistry.registerComponent('SantaApp', () => Root);

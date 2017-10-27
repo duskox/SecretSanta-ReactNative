@@ -9,8 +9,6 @@ import { SantaAppNavigator } from './src/navigation/Navigator.js';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
-AppRegistry.registerComponent('SantaApp', () => App);
-
 export default class App extends React.Component {
   render() {
     return (
@@ -20,3 +18,5 @@ export default class App extends React.Component {
 
 
 }
+
+AppRegistry.registerComponent('SantaApp', () => App);
