@@ -8,9 +8,7 @@ import {
   Picker,
   Button,
   } from 'react-native';
-import styles from '../../style/styles';
 import { StackNavigator, NavigationActions } from 'react-navigation';
-import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import Config from 'react-native-config';
 import { CLIENT_ID } from 'react-native-dotenv';
 
@@ -47,7 +45,7 @@ const containerJoin = {
  *
  */
 
-export default class JoinRaffleScreen extends React.Component {
+export default class RaffleInfoScreen extends React.Component {
   constructor(props) {
     super(props)
 
@@ -65,36 +63,14 @@ export default class JoinRaffleScreen extends React.Component {
 
   }
 
-  onPressLearnMore(stuff) {
-    console.log("Button pressed:", stuff)
-  }
-
   render () {
     const { navigate } = this.props.navigation;
-    console.log('This in Raffle screen:', this);
+    console.log('Raffle INFO screen:', this);
 
     return (
       <View style={containerJoin} >
         <Text>Welcome: { this.props.navigation.state.params.user.name }</Text>
-        <Text>Available raffle:</Text>
-        <Picker
-          style={{width: '80%'}}
-          selectedValue={this.state.selectedRaffle}
-          onValueChange={(itemValue, itemIndex) => this.setState({selectedRaffle: itemValue})}
-        >
-          <Picker.Item label="Berlin" value="berlin" />
-          <Picker.Item label="Helsinki" value="helsinki" />
-          <Picker.Item label="Stockholm" value="stockholm" />
-          <Picker.Item label="London" value="london" />
-          <Picker.Item label="München" value="munchen" />
-
-        </Picker>
-        <Button
-          onPress={this.onPressLearnMore}
-          title="Learn More"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+        <Text>DETAILS!!!!1</Text>
       </View>
     );
   }

@@ -30,7 +30,8 @@ import { CLIENT_ID } from 'react-native-dotenv';
  */
 
 const containerRoot = {
-  flexWrap: 'wrap',
+  display: 'flex',
+  flex: 1,
   backgroundColor: '#0f0',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -53,7 +54,6 @@ export default class Root extends React.Component {
   constructor(props) {
     super(props)
     this.state = { text : '', visibleHeight: Dimensions.get('window').height, user: undefined };
-    // googleSignIn = this._singIn.bind(this);
   }
 
   static navigationOptions = {
@@ -61,26 +61,35 @@ export default class Root extends React.Component {
     header: null,
   };
 
+  userInStateHasEverything() {
+    if (this.state.user === undefined) {
+      return false;
+    } else {
+      if (this.state.user.email === undefined) {
+        return false;
+      } else if (this.state.user.name === undefined) {
+        return false;
+      } else if (this.state.user.id === undefined) {
+        return false;
+      } else if (this.state.user.accessToken === undefined) {
+        return false;
+      } else if (this.state.user.serverAuthCode === undefined) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   componentDidMount() {
-    console.log('>>>>>>>>>>>>>>>>>>>> Adding change listener to app state');
     AppState.addEventListener('change', this.handleAppStateChange);
   }
 
   componentWillUnmount() {
-    console.log('Remove change listener to app state <<<<<<<<<<<<<<<<<<<<<<');
     AppState.removeEventListener('change', this.handleAppStateChange);
   }
 
   handleAppStateChange = (nextAppState) => {
-    console.log("handling ***************************:", this.state);
-    // if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-    //   console.log('App has come to the foreground!')
-    // }
-    // this.setState({appState: nextAppState});
-    if (this.state.user) {
-      console.log('BLAaaaaaaaaaaaaaaaaaaaaaaaaa!')
-      navigate('JoinRaffleScreen');
-    }
+    const { navigate } = this.props.navigation;
   }
 
   googleSignIn() {
@@ -96,19 +105,16 @@ export default class Root extends React.Component {
       .then(() => {
         GoogleSignin.currentUserAsync().then((user) => {
           if(user) {
-            console.log("This first-----------------------:",this)
             this.setState({user: user});
-            navigate('JoinRaffleScreen');
+            navigate('JoinRaffleScreen', { user: user });
           } else {
             GoogleSignin.signIn()
             .then((user) => {
-              console.log("This second++++++++++++++++++++:",this)
-              console.log("User>>>>>>>>>>>>>>>:",user);
               this.setState({user: user});
-              navigate('JoinRaffleScreen');
+              navigate('JoinRaffleScreen', { user: user });
             })
             .catch((err) => {
-              console.log('WRONG SIGNIN', err);
+              // console.log('------------- WRONG SIGNIN -------------', err);
             })
             .done();
           }
@@ -121,13 +127,9 @@ export default class Root extends React.Component {
   }
 
   render() {
-    console.log("this.props:", this.props);
-    console.log("Config:", Config);
-
     return (
       <View style={containerRoot} >
         <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
-        <Text></Text>
         <GoogleSigninButton
           style={styles.googleSignInStyle}
           size={GoogleSigninButton.Size.Standard}

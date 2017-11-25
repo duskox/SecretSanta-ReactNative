@@ -10,6 +10,7 @@ import { SantaAppNavigator } from './src/navigation/Navigator.js';
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default class App extends React.Component {
+
   render() {
     return (
       <SantaAppNavigator/>
