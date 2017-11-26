@@ -1,10 +1,10 @@
-
+import { BACKEND_URL } from 'react-native-dotenv';
 
 export function setUser(data) {
-  return fetch(process.env.BACKEND_URL, {
+  const url = BACKEND_URL + 'santApi/setuser';
+  return fetch(url, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data)
@@ -12,9 +12,17 @@ export function setUser(data) {
 }
 
 export function joinRaffle(data) {
-
+  const url = BACKEND_URL + 'santApi/join';
+  console.log("Data for fetch", data);
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
 }
 
 export function leaveRaffle(data) {
-  
+
 }

@@ -60,7 +60,7 @@ export default class RaffleInfoScreen extends React.Component {
   };
 
   cmponentDidMount() {
-
+    
   }
 
   render () {

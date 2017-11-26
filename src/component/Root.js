@@ -97,6 +97,7 @@ export default class Root extends React.Component {
 
     GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
       // play services are available. can now configure library
+      console.log("ClientID for Google:", CLIENT_ID)
       GoogleSignin.configure({
         scopes: [],
         webClientId: CLIENT_ID,
@@ -120,6 +121,10 @@ export default class Root extends React.Component {
           }
         }).done();
       });
+    })
+    .then((result) => {
+      console.log("What is here:", result)
+      console.log("****************************", GoogleSignin.currentUser())
     })
     .catch((err) => {
       console.log("Play services error", err.code, err.message);
