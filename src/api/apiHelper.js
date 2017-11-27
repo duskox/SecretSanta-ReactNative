@@ -13,7 +13,6 @@ export function setUser(data) {
 
 export function joinRaffle(data) {
   const url = BACKEND_URL + 'santApi/join';
-  console.log("Data for fetch", data);
   return fetch(url, {
     method: 'POST',
     headers: {
@@ -24,5 +23,12 @@ export function joinRaffle(data) {
 }
 
 export function leaveRaffle(data) {
-
+  const url = BACKEND_URL + 'santApi/leave';
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
 }

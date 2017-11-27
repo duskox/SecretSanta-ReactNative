@@ -69,7 +69,7 @@ export default class JoinRaffleScreen extends React.Component {
       queryHere: false,
     }
 
-    this.onPressLearnMore = this.onPressLearnMore.bind(this)
+    this.onPressJoin = this.onPressJoin.bind(this)
   }
 
   static navigationOptions = {
@@ -103,22 +103,30 @@ export default class JoinRaffleScreen extends React.Component {
     // console.log("DID MOUNT state:", this.state.queryData)
   }
 
-  onPressLearnMore(stuff) {
-    // const { navigate } = this.props.navigation;
-    // const data = {
-    //   email: this.queryData.email,
-    //   accessToken: this.queryData.accessToken,
-    //   serverAuthCode: this.queryData.serverAuthCode,
-    //   organisation_id: this.selectedRaffle
-    // }
-    // joinRaffle(data)
-    //   .then((result) => JSON.parse(result))
-    //   .then((parsed) => {
-    //     console.log("Parsed result:", parsed)
-    //   })
-    //   .catch((err) => {
-    //     console.log("There was error:", err)
-    //   })
+  onPressJoin() {
+    const { navigate } = this.props.navigation;
+    const data = {
+      email: this.state.queryData.email,
+      accessToken: this.state.queryData.accessToken,
+      serverAuthCode: this.state.queryData.serverAuthCode,
+      organisation_id: this.state.selectedRaffle
+    }
+    joinRaffle(data)
+      .then((result) => {
+        console.log("Result:", result)
+        return JSON.parse(result._bodyText)
+      })
+      .then((parsed) => {
+        console.log("Parsed result:", parsed)
+        // navigate('JoinRaffleScreen', { user: user });
+        this.setState({
+          raffleInfo: parsed
+        })
+        navigate('RaffleInfoScreen', { passedState: this.state });
+      })
+      .catch((err) => {
+        console.log("There was error:", err)
+      })
   }
 
   render () {
@@ -131,7 +139,7 @@ export default class JoinRaffleScreen extends React.Component {
         {renderPickerOrLoader(this.state)}
         {/* {renderPickerOrLoader().bind(this)} */}
         <Button
-          onPress={this.onPressLearnMore}
+          onPress={this.onPressJoin}
           title="Join"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
