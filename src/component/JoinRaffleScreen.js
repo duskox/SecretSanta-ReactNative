@@ -14,7 +14,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation';
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import Config from 'react-native-config';
 import { CLIENT_ID } from 'react-native-dotenv';
-import { setUser, joinRaffle } from '../api/apiHelper'
+import { setUser, joinRaffle, leaveRaffle } from '../api/apiHelper'
 
 AppRegistry.registerComponent('SantaApp', () => JoinRaffleScreen);
 
@@ -30,11 +30,66 @@ AppRegistry.registerComponent('SantaApp', () => JoinRaffleScreen);
  *
  */
 
-const containerJoin = {
-  display: 'flex',
-  backgroundColor: 'white',
-  alignItems: 'center',
+const mainContainer = {
+  flexDirection: 'column',
+  flex: 1,
+  backgroundColor: '#339900',
   justifyContent: 'space-between',
+}
+
+const underMainForLeftRightPadding = {
+  flexDirection: 'row',
+  flex: 1
+}
+
+const santaMainContainer = {
+  flexDirection: 'row',
+  flex: 1
+}
+
+const underSantaContainer = {
+  flex: 1
+}
+
+const sidePadding = {
+  flex: 0.1
+}
+
+const sidePaddingForImage = {
+  flex: 1
+}
+
+const mainMiddleView = {
+  flex: 0.9,
+  flexDirection: 'column'
+}
+
+const activityIndicator = {
+  backgroundColor: 'purple',
+  flex: 1,
+}
+
+const pickerStyle = {
+  width: '100%',
+}
+
+const joinButtonStyle = {
+  width: '100%',
+}
+
+const bigPickerContainer = {
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+}
+
+const imageItem = {
+  flex: 2,
+  width: 200,
+  backgroundColor: '#339900',
+  height: null,
+  resizeMode: 'contain',
 }
 
 /***
@@ -67,9 +122,13 @@ export default class JoinRaffleScreen extends React.Component {
       queryData: queryData,
       organisations: [],
       queryHere: false,
+      raffleJoined: false,
+
     }
 
     this.onPressJoin = this.onPressJoin.bind(this)
+    this.onPressLeave = this.onPressLeave.bind(this)
+    this.setSelectedPickerItem = this.setSelectedPickerItem.bind(this)
   }
 
   static navigationOptions = {
@@ -78,7 +137,6 @@ export default class JoinRaffleScreen extends React.Component {
   };
 
   componentWillMount() {
-    const { navigate } = this.props.navigation;
     setUser(this.state.queryData)
       .then((result) => {
         return result.data
@@ -91,9 +149,13 @@ export default class JoinRaffleScreen extends React.Component {
             selectedRaffle: parsedData.organisations[0].id })
         } else {
           this.setState({
-            raffleInfo: parsedData
+            raffleInfo: parsedData,
+            raffleJoined: true,
+            organisations: undefined,
+            selectedRaffle: -1,
+            queryHere: false
           })
-          navigate('RaffleInfoScreen', { passedState: this.state });
+
         }
       })
       .catch((err) => {
@@ -102,12 +164,10 @@ export default class JoinRaffleScreen extends React.Component {
   }
 
   componentDidMount() {
-    // console.log("In DID MOUNT ------------------------------------------------")
-    // console.log("DID MOUNT state:", this.state.queryData)
+
   }
 
   onPressJoin() {
-    const { navigate } = this.props.navigation;
     const data = {
       email: this.state.queryData.email,
       accessToken: this.state.queryData.accessToken,
@@ -121,68 +181,172 @@ export default class JoinRaffleScreen extends React.Component {
       })
       .then((parsed) => {
         console.log("Parsed result:", parsed)
-        // navigate('JoinRaffleScreen', { user: user });
         this.setState({
-          raffleInfo: parsed
+          raffleInfo: parsed,
+          raffleJoined: true
         })
-        navigate('RaffleInfoScreen', { passedState: this.state });
       })
       .catch((err) => {
-        console.log("There was error:", err)
+        console.log("Error joining raffle:", err)
       })
+  }
+
+  onPressLeave() {
+    console.log("this.state", this.state)
+    const data = {
+      email: this.state.queryData.email,
+      accessToken: this.state.queryData.accessToken,
+      serverAuthCode: this.state.queryData.serverAuthCode,
+      organisation_id: this.state.raffleInfo.id
+    }
+    console.log("In onPressLeave, data is:", data)
+    leaveRaffle(data)
+      .then((result) => {
+        console.log("Result after raffle was left:", result)
+        this.setState({
+          raffleJoined: false,
+          raffleInfo: undefined,
+          queryHere: true,
+          organisations: result.data
+        })
+      })
+      .catch((err) => {
+        console.log("Error leaving raffle:", err)
+      })
+  }
+
+  setSelectedPickerItem(itemValue, itemIndex) {
+    this.setState({
+      selectedRaffle: itemIndex
+    })
   }
 
   render () {
     const { navigate } = this.props.navigation;
+    const leaveCallback = this.onPressLeave;
+    const joinCallback = this.onPressJoin;
+    const selectPicker = this.setSelectedPickerItem;
 
     return (
-      <View style={containerJoin} >
-        <Text>Welcome: { this.props.navigation.state.params.user.name }</Text>
-        <Text>Available raffle:</Text>
-        {renderPickerOrLoader(this.state)}
-        {/* {renderPickerOrLoader().bind(this)} */}
-        <Button
-          onPress={this.onPressJoin}
-          title="Join"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+      <View style={mainContainer} >
+        <View style={underMainForLeftRightPadding}>
+          <View style={sidePadding} />
+          <View style={mainMiddleView}>
+            {renderSanta(this.state)}
+            <View style={underSantaContainer}>
+              {renderLoadingScreen(this.state)}
+              {renderJoinedRaffleData(this.state)}
+              {renderLeaveButton(this.state)}
+              {renderPicker(this.state)}
+            </View>
+          </View>
+          <View style={sidePadding} />
+        </View>
       </View>
     );
 
-    function renderPickerOrLoader(localState) {
-      if (localState.queryHere) {
+    function renderLeaveButton(localState) {
+      if (localState.raffleJoined) {
+        const deadlineDate = new Date(localState.raffleInfo.deadline)
+        const todayDate = new Date()
+        if (todayDate < deadlineDate) {
+          return (
+            <Button
+              onPress={leaveCallback}
+              title="Leave"
+              color="#db1111"
+            />
+          )
+        } else {
+          return (
+            <Button
+              onPress={leaveCallback}
+              disabled
+              title="Leave"
+              color="#db1111"
+            />
+          )
+        }
+      }
+    }
+
+    function renderSanta(localState) {
+      if (localState.raffleJoined) {
         return (
-          <Picker
-            style={{width: '80%'}}
-            onValueChange={(itemValue, itemIndex) => this.setSelectedPickerItem(itemValue, itemIndex)}
-          >
-            {localState.organisations.map((organisation) => <Picker.Item label={organisation.name} value={organisation.id} key={organisation.id}/>)}
-          </Picker>
+          <View style={santaMainContainer}>
+            <View style={sidePaddingForImage} />
+            <Image source={require('../../assets/colour-pixel-santa.png')} resizeMode='contain' style={imageItem}/>
+            <View style={sidePaddingForImage} />
+          </View>
         )
       } else {
         return (
-          <ActivityIndicator />
+          <View style={santaMainContainer}>
+            <View style={sidePaddingForImage} />
+            <Image source={require('../../assets/bw-pixel-santa.png')} resizeMode='contain' style={imageItem}/>
+            <View style={sidePaddingForImage} />
+          </View>
         )
       }
     }
 
-    // function renderPickerOrLoader() {
-    //   if (this.state.queryHere) {
-    //     return (
-    //       <Picker
-    //         style={{width: '80%'}}
-    //         onValueChange={(itemValue, itemIndex) => this.setSelectedPickerItem(itemValue, itemIndex)}
-    //       >
-    //         {this.state.organisations.map((organisation) => <Picker.Item label={organisation.name} value={organisation.id} key={organisation.id}/>)}
-    //       </Picker>
-    //     )
-    //   } else {
-    //     return (
-    //       <ActivityIndicator />
-    //     )
-    //   }
-    // }
+    function renderJoinedRaffleData(localState) {
+      console.log("Should joined info be shown:", localState.raffleInfo)
+      if (localState.raffleInfo != undefined && localState.raffleJoined) {
+        const result = []
+        result.push(<Text key={0}>Thank you for joining {localState.raffleInfo.name} secret santa raffle!</Text>)
+        result.push(<Text key={4}>BLA</Text>)
+        result.push(<Text key={5}>You can opt out before the round closes:</Text>)
+        result.push(<Text key={6}>{localState.raffleInfo.deadline}</Text>)
+        result.push(<Text key={7}>After </Text>)
+        return (
+          result
+        )
+      }
+    }
 
+    function renderLoadingScreen(localState) {
+      if (!localState.queryHere) {
+        <ActivityIndicator class={activityIndicator} />
+      }
+    }
+
+    function renderPicker(localState) {
+      console.log("In render picker and queryHere is:", localState.queryHere)
+      console.log("In render picker and localstate.joined:", localState.raffleJoined)
+      console.log("What is in orgs:", localState.organisations)
+      console.log("Should picker be shown:", (localState.queryHere && !localState.raffleJoined))
+      if (localState.queryHere && !localState.raffleJoined) {
+        return (
+          <View style={bigPickerContainer}>
+              <Picker
+                style={pickerStyle}
+                onValueChange={(itemValue, itemIndex) => selectPicker(itemValue, itemIndex)}>
+                  {localState.organisations.map((organisation) => <Picker.Item label={organisation.name} value={organisation.id} key={organisation.id}/>)}
+              </Picker>
+              <Button
+                style={joinButtonStyle}
+                onPress={joinCallback}
+                title="Join"
+                color="#3eba00"
+              />
+          </View>
+        )
+      }
+    }
   }
 }
+
+/*
+<Text>Raffle details</Text>
+<Text>ID:</Text>
+<Text>{localState.raffleInfo.id}</Text>
+<Text>NAME:</Text>
+<Text>{localState.raffleInfo.name}</Text>
+<Text>DEADLINE:</Text>
+<Text>{localState.raffleInfo.deadline}</Text>
+<Text>PARTY</Text>
+<Text>{localState.raffleInfo.party}</Text>
+<Text>LOCATION:</Text>
+<Text>{localState.raffleInfo.location}</Text>
+*/
