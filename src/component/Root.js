@@ -32,11 +32,29 @@ import { CLIENT_ID } from 'react-native-dotenv';
 const containerRoot = {
   display: 'flex',
   flex: 1,
-  backgroundColor: '#0f0',
+  backgroundColor: '#339900',
   alignItems: 'center',
   justifyContent: 'space-between',
 }
 
+const spacer = {
+  flex: 1,
+}
+
+const imageItem = {
+  flex: 3,
+  width: 200,
+  backgroundColor: '#339900',
+  height: null,
+  resizeMode: 'contain',
+}
+
+const googleSignInStyle = {
+  width: 130,
+  height: 48,
+  marginTop: 20,
+  marginBottom: 20,
+}
 
 /***
  *     _______ _______ _______ _______ _______ _       _______ _      _________
@@ -123,24 +141,26 @@ export default class Root extends React.Component {
       });
     })
     .then((result) => {
-      console.log("What is here:", result)
-      console.log("****************************", GoogleSignin.currentUser())
+      // console.log("What is here:", result)
+      // console.log("****************************", GoogleSignin.currentUser())
     })
     .catch((err) => {
-      console.log("Play services error", err.code, err.message);
+      // console.log("Play services error", err.code, err.message);
     });
   }
 
   render() {
     return (
       <View style={containerRoot} >
-        <Image source={require('../../assets/santa.jpg')} resizeMode='contain' style={styles.imageItem}/>
+        <View style={spacer}/>
+        <Image source={require('../../assets/black-pixel-santa.png')} resizeMode='contain' style={imageItem}/>
         <GoogleSigninButton
-          style={styles.googleSignInStyle}
+          style={googleSignInStyle}
           size={GoogleSigninButton.Size.Standard}
-          color={GoogleSigninButton.Color.Light}
+          color={GoogleSigninButton.Color.Dark}
           onPress={this.googleSignIn.bind(this)}
         />
+        <View style={spacer}/>
       </View>
     );
   }

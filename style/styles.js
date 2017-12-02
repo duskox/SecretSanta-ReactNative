@@ -15,25 +15,12 @@ var SecretSantaStyles = React.StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
   },
-  imageItem: {
-    flex: 3,
-    width: 200,
-    backgroundColor: '#fff',
-    height: null,
-    resizeMode: 'contain',
-  },
   buttonStyle: {
     padding: 4,
     fontSize: 24,
     marginTop: 10,
     color: 'black',
     marginBottom: 10,
-  },
-  googleSignInStyle:{
-    width: 130,
-    height: 48,
-    marginTop: 20,
-    marginBottom: 20,
   },
 });
 
