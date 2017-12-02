@@ -15,6 +15,7 @@ import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import Config from 'react-native-config';
 import { CLIENT_ID } from 'react-native-dotenv';
 import { setUser, joinRaffle, leaveRaffle } from '../api/apiHelper'
+import dateFormat from 'dateformat'
 
 AppRegistry.registerComponent('SantaApp', () => JoinRaffleScreen);
 
@@ -291,16 +292,39 @@ export default class JoinRaffleScreen extends React.Component {
     }
 
     function renderJoinedRaffleData(localState) {
+      const thanksStyle = {
+        fontSize: 30,
+        fontWeight: 'bold',
+        textAlign: 'center'
+      }
+
+      const smallPrint = {
+        fontSize: 20,
+        textAlign: 'center',
+      }
+
+      const stayPrint = {
+        fontSize: 18,
+        textAlign: 'center'
+      }
+
+      const centerTextView = {
+        alignItems: 'center'
+      }
+
+      // const deadlineDate = new Date(localState.raffleInfo.deadline)
+
       console.log("Should joined info be shown:", localState.raffleInfo)
       if (localState.raffleInfo != undefined && localState.raffleJoined) {
-        const result = []
-        result.push(<Text key={0}>Thank you for joining {localState.raffleInfo.name} secret santa raffle!</Text>)
-        result.push(<Text key={4}>BLA</Text>)
-        result.push(<Text key={5}>You can opt out before the round closes:</Text>)
-        result.push(<Text key={6}>{localState.raffleInfo.deadline}</Text>)
-        result.push(<Text key={7}>After </Text>)
         return (
-          result
+          <View style={centerTextView}>
+            <Text style={thanksStyle}>Thank you for joining {localState.raffleInfo.name} secret santa raffle!</Text>
+            <Text> </Text>
+            <Text style={smallPrint}>You can opt out before the round closes on {dateFormat(new Date(localState.raffleInfo.deadline), "fullDate")}</Text>
+            <Text> </Text>
+            <Text style={stayPrint}>If you stay you will receive who you buy the present for!</Text>
+            <Text> </Text>
+          </View>
         )
       }
     }
