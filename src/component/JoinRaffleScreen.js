@@ -78,23 +78,26 @@ export default class JoinRaffleScreen extends React.Component {
   };
 
   componentWillMount() {
-    console.log("In WILL MOUNT ------------------------------------------------")
-    console.log("WILL MOUNT state", this.state.queryData)
+    const { navigate } = this.props.navigation;
     setUser(this.state.queryData)
       .then((result) => {
-        return JSON.parse(result._bodyText)
+        return result.data
       })
       .then((parsedData) => {
-        this.setState({
-          organisations: parsedData.organisations,
-          queryHere: true,
-          selectedRaffle: parsedData.organisations[0].id
-
-        })
-        return
+        if (parsedData.organisations != undefined) {
+          this.setState({
+            organisations: parsedData.organisations,
+            queryHere: true,
+            selectedRaffle: parsedData.organisations[0].id })
+        } else {
+          this.setState({
+            raffleInfo: parsedData
+          })
+          navigate('RaffleInfoScreen', { passedState: this.state });
+        }
       })
       .catch((err) => {
-        console.log("ERRRRRROR!!!!!!!!1 <", err)
+        console.log("Error:", err)
       })
   }
 
@@ -113,8 +116,8 @@ export default class JoinRaffleScreen extends React.Component {
     }
     joinRaffle(data)
       .then((result) => {
-        console.log("Result:", result)
-        return JSON.parse(result._bodyText)
+        console.log("Result:", result.data)
+        return result.data
       })
       .then((parsed) => {
         console.log("Parsed result:", parsed)
