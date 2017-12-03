@@ -124,7 +124,8 @@ export default class JoinRaffleScreen extends React.Component {
       organisations: [],
       queryHere: false,
       raffleJoined: false,
-
+      showKid: false,
+      kidName: ''
     }
 
     this.onPressJoin = this.onPressJoin.bind(this)
@@ -149,14 +150,24 @@ export default class JoinRaffleScreen extends React.Component {
             queryHere: true,
             selectedRaffle: parsedData.organisations[0].id })
         } else {
-          this.setState({
-            raffleInfo: parsedData,
-            raffleJoined: true,
-            organisations: undefined,
-            selectedRaffle: -1,
-            queryHere: false
-          })
-
+          if (parsedData.kid_name != undefined) {
+            this.setState({
+              showKid: true,
+              kidName: parsedData.kid_name,
+              raffleJoined: true,
+              organisations: undefined,
+              selectedRaffle: -1,
+              queryHere: false
+            })
+          } else {
+            this.setState({
+              raffleInfo: parsedData,
+              raffleJoined: true,
+              organisations: undefined,
+              selectedRaffle: -1,
+              queryHere: false
+            })
+          }
         }
       })
       .catch((err) => {
@@ -239,6 +250,7 @@ export default class JoinRaffleScreen extends React.Component {
               {renderJoinedRaffleData(this.state)}
               {renderLeaveButton(this.state)}
               {renderPicker(this.state)}
+              {renderKidInfo(this.state)}
             </View>
           </View>
           <View style={sidePadding} />
@@ -247,7 +259,7 @@ export default class JoinRaffleScreen extends React.Component {
     );
 
     function renderLeaveButton(localState) {
-      if (localState.raffleJoined) {
+      if (localState.raffleJoined && !localState.showKid) {
         const deadlineDate = new Date(localState.raffleInfo.deadline)
         const todayDate = new Date()
         if (todayDate < deadlineDate) {
@@ -315,7 +327,7 @@ export default class JoinRaffleScreen extends React.Component {
       // const deadlineDate = new Date(localState.raffleInfo.deadline)
 
       console.log("Should joined info be shown:", localState.raffleInfo)
-      if (localState.raffleInfo != undefined && localState.raffleJoined) {
+      if (localState.raffleInfo != undefined && localState.raffleJoined && !localState.showKid) {
         return (
           <View style={centerTextView}>
             <Text style={thanksStyle}>Thank you for joining {localState.raffleInfo.name} secret santa raffle!</Text>
@@ -340,7 +352,7 @@ export default class JoinRaffleScreen extends React.Component {
       console.log("In render picker and localstate.joined:", localState.raffleJoined)
       console.log("What is in orgs:", localState.organisations)
       console.log("Should picker be shown:", (localState.queryHere && !localState.raffleJoined))
-      if (localState.queryHere && !localState.raffleJoined) {
+      if (localState.queryHere && !localState.raffleJoined && !localState.showKid) {
         return (
           <View style={bigPickerContainer}>
               <Picker
@@ -358,6 +370,36 @@ export default class JoinRaffleScreen extends React.Component {
         )
       }
     }
+
+    function renderKidInfo(localstate) {
+      const thanksStyle = {
+        fontSize: 30,
+        fontWeight: 'bold',
+        textAlign: 'center'
+      }
+
+      const smallPrint = {
+        fontSize: 20,
+        textAlign: 'center',
+      }
+
+      const centerTextView = {
+        alignItems: 'center'
+      }
+
+      if(localstate.showKid) {
+        return (
+          <View style={centerTextView}>
+            <Text style={smallPrint}>You are supposed to buy a present of around 15EUR to</Text>
+            <Text> </Text>
+            <Text style={thanksStyle}>{localstate.kidName}</Text>
+            <Text> </Text>
+            <Text style={smallPrint}>See you at the party!</Text>
+          </View>
+        )
+      }
+    }
+
   }
 }
 
