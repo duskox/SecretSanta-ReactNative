@@ -322,7 +322,7 @@ export default class JoinRaffleScreen extends React.Component {
             <Text> </Text>
             <Text style={smallPrint}>You can opt out before the round closes on {dateFormat(new Date(localState.raffleInfo.deadline), "fullDate")}</Text>
             <Text> </Text>
-            <Text style={stayPrint}>If you stay you will receive who you buy the present for!</Text>
+            <Text style={stayPrint}>If you stay you will receive info who you have to buy the present for!</Text>
             <Text> </Text>
           </View>
         )
